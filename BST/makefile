@@ -1,13 +1,13 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 
-all: your_program
+all: main1
 
-your_program: main.o bst.o binary_tree.o stack_link.o queue_link.o
-	$(CC) $(CFLAGS) -o your_program main.o bst.o binary_tree.o stack_link.o queue_link.o
+main1: main1.o bst.o binary_tree.o stack_link.o queue_link.o
+	$(CC) $(CFLAGS) -o main1 main1.o bst.o binary_tree.o stack_link.o queue_link.o
 
-main.o: main.c bst.h
-	$(CC) $(CFLAGS) -c main.c
+main1.o: main1.c bst.h
+	$(CC) $(CFLAGS) -c main1.c
 
 bst.o: bst.c bst.h
 	$(CC) $(CFLAGS) -c bst.c
@@ -22,4 +22,4 @@ queue_link.o: queue_link.c queue_link.h
 	$(CC) $(CFLAGS) -c queue_link.c
 
 clean:
-	rm -f *.o your_program
+	rm -f *.o main1

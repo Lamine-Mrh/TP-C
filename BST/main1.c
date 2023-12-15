@@ -8,6 +8,10 @@
 
 #define ALPHABET_SIZE 26 // Taille de l'alphabet latin
 
+link join_BST(link h1, link h2);
+
+
+
 // Fonction pour générer une lettre aléatoire en majuscule
 char generate_random_letter() {
     return 'A' + rand() % ALPHABET_SIZE;
@@ -63,6 +67,9 @@ int main(int argc, char *argv[]) {
 
     // Rééquilibrage de l'ABR fusionné
     merged_tree = balance_BST(merged_tree);
+    printf("Etiquettes de l'ABR equilibree:\n");
+    traverse_inorder_binary_tree(merged_tree, print_label);
+    printf("\n");
 
     // Libération de la mémoire
     delete_binary_tree(&tree_n);
