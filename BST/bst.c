@@ -144,70 +144,47 @@ link delete_node_BST(link h, item v) {
     return h;
 }
 
+
 /*****************************************************/
-/***            TP n°5 question d                  ***/
+/***               TD n°6 Exercice 1              ***/
 /*****************************************************/
-/** Puts a BST into perfect balance, by recursively */
-/* putting the median node at the root */
 link balance_BST(link h) {
     if (h == NULL) return NULL;
 
-    int size = size_binary_tree(h);
-    item *sortedArray = (item *)malloc(size * sizeof(item));
-    int index = 0;
+    struct stack *stack = init_stack(size_binary_tree(h)); 
 
-    // Store BST values in sorted array using an inorder traversal
-    if (h != NULL) {
-        struct stack *stack = init_stack(size); // Initialize a stack for iterative traversal
-        link current = h;
-
-        while (current != NULL || !is_empty_stack(stack)) {
-            while (current != NULL) {
-                push_stack(stack, current);
-                current = left(current);
-            }
-
-            current = pop_stack(stack);
-            sortedArray[index++] = get_binary_tree_root(current);
-            current = right(current);
-        }
-
-        delete_stack(&stack); // Free stack memory
+    link current = h;
+    while (current != NULL) {
+        push_stack(stack, current);
+        current = current->left;
     }
 
-    // Rebuild balanced BST from the sorted array
-    free(h); // Free memory of the original BST
+    h = NULL;
+    while (!is_empty_stack(stack)) {
+        current = pop_stack(stack);
 
-    int start = 0, end = size - 1;
+        h = insert_BST(h, current->label);
 
-    while (start <= end) {
-        int mid = (start + end) / 2;
-
-        h = insert_BST(h, sortedArray[mid]);
-
-        if (mid > 0) {
-            link prev = select_BST(h, mid - 1);
-            prev->right = NULL;
-        }
-
-        if (mid < size - 1) {
-            link next = select_BST(h, mid + 1);
-            next->left = NULL;
-        }
-
-        if (mid == 0 && mid == size - 1) break;
-
-        if (mid == 0) {
-            start = mid + 1;
-        } else if (mid == size - 1) {
-            end = mid - 1;
-        } else {
-            start = 0;
-            end = size - 1;
+        current = current->right;
+        while (current != NULL) {
+            push_stack(stack, current);
+            current = current->left;
         }
     }
 
-    free(sortedArray);
     return h;
+}
+/*****************************************************/
+/***               TD n°6 Exercice 2              ***/
+/*****************************************************/
+link join_BST(link h, link k) {
+    if (h == NULL) return k;
+    if (k == NULL) return h;
+
+    k = insert_BST(k, get_binary_tree_root(h)); 
+    k->left = join_BST(left(h), left(k));
+    k->right = join_BST(right(h), right(k)); 
+
+    return k;
 }
 
